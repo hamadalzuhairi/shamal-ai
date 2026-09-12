@@ -27,8 +27,10 @@ export function matchScenarioByRules(need: string): { scenario: Scenario | null;
   let best: { scenario: Scenario | null; score: number } = { scenario: null, score: 0 };
   for (const sc of SCENARIOS) {
     let score = 0;
+    // الكلمات الأطول أكثر تحديداً: «علامة تجارية» تتفوق على «مشروع»
     for (const kw of sc.intentKeywords) {
-      if (n.includes(normalize(kw))) score += kw.length > 4 ? 2 : 1;
+      const k = normalize(kw);
+      if (n.includes(k)) score += k.length;
     }
     if (score > best.score) best = { scenario: sc, score };
   }

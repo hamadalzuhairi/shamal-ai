@@ -111,7 +111,7 @@ export const BUSINESS_SERVICES: Service[] = [
     category: "business",
     description:
       "رخصة مزاولة النشاط للمحل من أمانة منطقة الحدود الشمالية عبر منصة بلدي. تشمل الرخصة تصريح السلامة من الدفاع المدني للأنشطة المعتمدة دون مراجعة الجهة.",
-    url: "https://balady.gov.sa/ar/services/issuing-commercial-license",
+    url: "https://balady.gov.sa/en/services/issuing-commercial-license",
     requirements: [
       {
         id: "bl-lease",
