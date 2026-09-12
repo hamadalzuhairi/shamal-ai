@@ -2,7 +2,7 @@
 
 import { useEffect, type ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useAuth } from "@/lib/firebase/auth-context";
+import { useAuth } from "@/lib/auth-context";
 import { Spinner } from "./ui";
 
 /** يحمي الصفحات الداخلية: يحوّل غير المسجلين إلى صفحة الدخول */

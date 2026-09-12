@@ -6,7 +6,7 @@ import { Suspense, use } from "react";
 import { AlertTriangle, ArrowLeft, Check, ExternalLink, HelpCircle, Route, Undo2 } from "lucide-react";
 import { EmptyState, Page, Spinner, TopBar } from "@/components/ui";
 import { useJourney } from "@/lib/hooks/useJourneys";
-import { useAuth } from "@/lib/firebase/auth-context";
+import { useAuth } from "@/lib/auth-context";
 import { currentStep, setRequirementStatus, stepRequirements } from "@/lib/engine";
 import { getEntity, getService } from "@/lib/kb";
 import { pushNotification } from "@/lib/storage";

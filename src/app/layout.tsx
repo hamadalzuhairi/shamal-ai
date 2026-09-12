@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/lib/firebase/auth-context";
+import { AuthProvider } from "@/lib/auth-context";
 
 const arabic = IBM_Plex_Sans_Arabic({
   variable: "--font-arabic",

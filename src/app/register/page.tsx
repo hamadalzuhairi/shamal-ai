@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { LogoFull } from "@/components/Logo";
-import { useAuth } from "@/lib/firebase/auth-context";
+import { useAuth } from "@/lib/auth-context";
 
 export default function RegisterPage() {
   const { signUp } = useAuth();

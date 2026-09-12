@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useAuth } from "@/lib/firebase/auth-context";
+import { useAuth } from "@/lib/auth-context";
 import { getJourney, listJourneys, listNotifications, saveJourney } from "@/lib/storage";
 import type { Journey, Notification } from "@/lib/types";
 

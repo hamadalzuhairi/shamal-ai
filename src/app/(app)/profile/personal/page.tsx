@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Page, TopBar } from "@/components/ui";
-import { useAuth } from "@/lib/firebase/auth-context";
+import { useAuth } from "@/lib/auth-context";
 
 const CITIES = ["عرعر", "رفحاء", "طريف", "العويقيلة", "أخرى"];
 const PREF_KEY = "shamal:prefs";

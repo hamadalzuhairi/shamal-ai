@@ -6,7 +6,7 @@ import { use } from "react";
 import { AlertTriangle, ArrowLeft, Check, CircleHelp, HelpCircle, ShieldCheck, X } from "lucide-react";
 import { EmptyState, Page, ReadinessRing, Spinner, StatusPill, TopBar } from "@/components/ui";
 import { useJourney } from "@/lib/hooks/useJourneys";
-import { useAuth } from "@/lib/firebase/auth-context";
+import { useAuth } from "@/lib/auth-context";
 import { completeCurrentStep, computeReadiness, currentStep, setRequirementStatus, stepRequirements, reqStatusOf } from "@/lib/engine";
 import { getService } from "@/lib/kb";
 import { pushNotification } from "@/lib/storage";

@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { ArrowLeft, Mic, Sparkles } from "lucide-react";
 import { Page, Spinner, TopBar } from "@/components/ui";
-import { useAuth } from "@/lib/firebase/auth-context";
+import { useAuth } from "@/lib/auth-context";
 import { createJourney, uid } from "@/lib/engine";
 import { getScenario, SCENARIOS } from "@/lib/kb";
 import { pushNotification, saveJourney } from "@/lib/storage";

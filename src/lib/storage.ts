@@ -1,22 +1,12 @@
 "use client";
 
 /**
- * طبقة تخزين موحدة: Firestore عند توفر Firebase، وإلا localStorage.
- * تُخزن الرحلات والإشعارات لكل مستخدم.
+ * طبقة تخزين موحدة: API الخادم (Postgres) للمستخدمين الحقيقيين،
+ * و localStorage للوضع التجريبي (معرّف المستخدم يبدأ بـ demo-).
  */
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  orderBy,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
-import { db, firebaseEnabled } from "./firebase/client";
 import type { Journey, Notification } from "./types";
 
+const isDemo = (uid: string) => uid.startsWith("demo-");
 const key = (uid: string, col: string) => `shamal:${uid}:${col}`;
 
 function localList<T>(uid: string, col: string): T[] {
@@ -36,14 +26,22 @@ function localDelete(uid: string, col: string, id: string) {
   localStorage.setItem(key(uid, col), JSON.stringify(list));
 }
 
+async function remoteList<T>(col: string): Promise<T[]> {
+  const res = await fetch(`/api/data/${col}`, { cache: "no-store" });
+  if (!res.ok) return [];
+  return ((await res.json()) as { items: T[] }).items;
+}
+async function remoteSave(col: string, item: unknown) {
+  await fetch(`/api/data/${col}`, { method: "PUT", headers: { "content-type": "application/json" }, body: JSON.stringify({ item }) });
+}
+async function remoteDelete(col: string, id: string) {
+  await fetch(`/api/data/${col}`, { method: "DELETE", headers: { "content-type": "application/json" }, body: JSON.stringify({ id }) });
+}
+
 /* ---------- الرحلات ---------- */
 export async function listJourneys(uid: string): Promise<Journey[]> {
-  if (firebaseEnabled && db) {
-    const q = query(collection(db, "journeys"), where("userId", "==", uid), orderBy("updatedAt", "desc"));
-    const snap = await getDocs(q);
-    return snap.docs.map((d) => d.data() as Journey);
-  }
-  return localList<Journey>(uid, "journeys").sort((a, b) => b.updatedAt - a.updatedAt);
+  if (isDemo(uid)) return localList<Journey>(uid, "journeys").sort((a, b) => b.updatedAt - a.updatedAt);
+  return remoteList<Journey>("journeys");
 }
 
 export async function getJourney(uid: string, id: string): Promise<Journey | null> {
@@ -52,43 +50,27 @@ export async function getJourney(uid: string, id: string): Promise<Journey | nul
 }
 
 export async function saveJourney(j: Journey): Promise<void> {
-  if (firebaseEnabled && db) {
-    await setDoc(doc(db, "journeys", j.id), j);
-    return;
-  }
-  localSave(j.userId, "journeys", j);
+  if (isDemo(j.userId)) return localSave(j.userId, "journeys", j);
+  await remoteSave("journeys", j);
 }
 
 export async function deleteJourney(uid: string, id: string): Promise<void> {
-  if (firebaseEnabled && db) {
-    await deleteDoc(doc(db, "journeys", id));
-    return;
-  }
-  localDelete(uid, "journeys", id);
+  if (isDemo(uid)) return localDelete(uid, "journeys", id);
+  await remoteDelete("journeys", id);
 }
 
 /* ---------- الإشعارات ---------- */
 export async function listNotifications(uid: string): Promise<Notification[]> {
-  if (firebaseEnabled && db) {
-    const q = query(collection(db, "notifications"), where("userId", "==", uid), orderBy("at", "desc"));
-    const snap = await getDocs(q);
-    return snap.docs.map((d) => d.data() as Notification);
-  }
-  return localList<Notification>(uid, "notifications").sort((a, b) => b.at - a.at);
+  if (isDemo(uid)) return localList<Notification>(uid, "notifications").sort((a, b) => b.at - a.at);
+  return remoteList<Notification>("notifications");
 }
 
 export async function saveNotification(n: Notification): Promise<void> {
-  if (firebaseEnabled && db) {
-    await setDoc(doc(db, "notifications", n.id), n);
-    return;
-  }
-  localSave(n.userId, "notifications", n);
+  if (isDemo(n.userId)) return localSave(n.userId, "notifications", n);
+  await remoteSave("notifications", n);
 }
 
-export async function pushNotification(
-  uid: string,
-  n: Omit<Notification, "id" | "userId" | "read" | "at">,
-): Promise<void> {
+export async function pushNotification(uid: string, n: Omit<Notification, "id" | "userId" | "read" | "at">): Promise<void> {
   await saveNotification({
     ...n,
     id: Math.random().toString(36).slice(2) + Date.now().toString(36),

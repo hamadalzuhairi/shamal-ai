@@ -6,7 +6,7 @@ import { useState } from "react";
 import { ArrowLeft, Car, Contact, FileBadge, Keyboard, Mic, Plane, Sparkles } from "lucide-react";
 import { NotificationBell, Page, SectionTitle, TopBar } from "@/components/ui";
 import { LogoMark } from "@/components/Logo";
-import { useAuth } from "@/lib/firebase/auth-context";
+import { useAuth } from "@/lib/auth-context";
 import { useSpeech } from "@/lib/hooks/useSpeech";
 import { useJourneys, useNotifications } from "@/lib/hooks/useJourneys";
 import { getService } from "@/lib/kb";

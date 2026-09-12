@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
-import { useAuth } from "@/lib/firebase/auth-context";
+import { useAuth } from "@/lib/auth-context";
 
 /** الشاشة 12: الشاشة التمهيدية */
 export default function Splash() {

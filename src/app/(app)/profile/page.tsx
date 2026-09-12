@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, Globe, HelpCircle, LogOut, Settings, User, UserCircle } from "lucide-react";
 import { Page, TopBar } from "@/components/ui";
-import { useAuth } from "@/lib/firebase/auth-context";
+import { useAuth } from "@/lib/auth-context";
 
 /** الشاشة 9: حسابي */
 export default function ProfilePage() {
