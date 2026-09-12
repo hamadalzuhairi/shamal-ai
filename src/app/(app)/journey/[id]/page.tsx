@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { use } from "react";
-import { ArrowLeft, Check, FileText, Lock } from "lucide-react";
+import { ArrowLeft, Check, Lock } from "lucide-react";
+import { serviceIcon } from "@/lib/icons";
 import { EmptyState, Page, Spinner, StatusPill, TopBar } from "@/components/ui";
 import { useJourney } from "@/lib/hooks/useJourneys";
 import { computeReadiness } from "@/lib/engine";
@@ -53,6 +54,7 @@ export default function JourneyPage({ params }: { params: Promise<{ id: string }
             const svc = getService(st.serviceId);
             if (!svc) return null;
             const ent = getEntity(svc.entityId);
+            const Icon = serviceIcon(svc.id);
             const isCurrent = st.status === "current" || st.status === "blocked";
             return (
               <li key={st.serviceId} className="relative flex gap-3 mb-3">
@@ -81,7 +83,7 @@ export default function JourneyPage({ params }: { params: Promise<{ id: string }
                     </div>
                   </div>
                   <div className="w-9 h-9 rounded-xl bg-surface-2 flex items-center justify-center text-primary">
-                    <FileText size={18} />
+                    <Icon size={20} strokeWidth={1.8} />
                   </div>
                 </Link>
               </li>

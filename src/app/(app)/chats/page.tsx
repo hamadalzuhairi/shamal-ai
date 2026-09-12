@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { MessageSquare, Star } from "lucide-react";
+import { Star } from "lucide-react";
+import { serviceIcon } from "@/lib/icons";
+import { getScenario } from "@/lib/kb";
 import { EmptyState, Page, Spinner, TopBar } from "@/components/ui";
 import { useJourneys } from "@/lib/hooks/useJourneys";
 import { saveJourney } from "@/lib/storage";
@@ -63,11 +65,12 @@ export default function ChatsPage() {
               const last = j.messages[j.messages.length - 1];
               const cur = j.steps.find((s) => s.status !== "done");
               const done = !cur;
+              const Icon = serviceIcon(cur?.serviceId ?? getScenario(j.scenarioId)?.serviceIds[0] ?? "");
               return (
                 <li key={j.id} className="card p-3 flex items-center gap-3">
                   <Link href={`/journey/${j.id}`} className="flex items-center gap-3 flex-1 min-w-0">
                     <div className="w-11 h-11 rounded-xl bg-primary-soft text-primary flex items-center justify-center shrink-0">
-                      <MessageSquare size={20} />
+                      <Icon size={22} strokeWidth={1.8} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="font-bold text-sm truncate">{j.title}</div>

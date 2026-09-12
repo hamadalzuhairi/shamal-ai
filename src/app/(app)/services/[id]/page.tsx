@@ -5,6 +5,7 @@ import { use } from "react";
 import { Building2, Clock, Coins, ExternalLink, Link2, ListChecks, Sparkles } from "lucide-react";
 import { EmptyState, Page, TopBar } from "@/components/ui";
 import { getEntity, getService, SCENARIOS } from "@/lib/kb";
+import { serviceIcon } from "@/lib/icons";
 
 /** تفاصيل خدمة من قاعدة المعرفة */
 export default function ServiceDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -21,12 +22,16 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ id: st
     );
   const ent = getEntity(svc.entityId);
   const scenario = SCENARIOS.find((s) => s.serviceIds.includes(svc.id));
+  const Icon = serviceIcon(svc.id);
 
   return (
     <>
       <TopBar title="تفاصيل الخدمة" back />
       <Page>
         <div className="card p-4">
+          <div className="w-12 h-12 rounded-2xl bg-primary-soft text-primary flex items-center justify-center mb-3">
+            <Icon size={24} strokeWidth={1.8} />
+          </div>
           <div className="text-xs text-muted flex items-center gap-1">
             <Building2 size={12} /> {ent?.name}
           </div>

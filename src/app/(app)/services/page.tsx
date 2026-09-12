@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ChevronLeft, FileText, Search } from "lucide-react";
+import { ChevronLeft, Search } from "lucide-react";
+import { serviceIcon } from "@/lib/icons";
 import { Page, TopBar } from "@/components/ui";
 import { CATEGORY_LABELS, getEntity, SERVICES } from "@/lib/kb";
 
@@ -46,11 +47,12 @@ export default function ServicesPage() {
         <ul className="mt-4 space-y-2">
           {list.map((s) => {
             const ent = getEntity(s.entityId);
+            const Icon = serviceIcon(s.id);
             return (
               <li key={s.id}>
                 <Link href={`/services/${s.id}`} className="card p-3 flex items-center gap-3">
                   <div className="w-11 h-11 rounded-xl bg-primary-soft text-primary flex items-center justify-center shrink-0">
-                    <FileText size={20} />
+                    <Icon size={22} strokeWidth={1.8} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="font-bold text-sm truncate">{s.name}</div>
