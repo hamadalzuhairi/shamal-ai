@@ -23,12 +23,12 @@ export function LogoMark({ size = 56, className = "" }: { size?: number; classNa
           <stop offset="1" stopColor="#2f7f7b" />
         </linearGradient>
         <clipPath id="ksa-clip">
-          <path d="M14 26 L30 16 L44 14 L52 18 L60 12 L72 14 L86 24 L92 34 L88 44 L84 50 L86 58 L82 66 L70 74 L58 80 L48 88 L40 86 L36 78 L30 70 L24 64 L16 54 L12 44 Z" />
+          <path d="M22 20 L36 12 L47 18 L68 24 L76 30 L80 39 L82 46 L88 47 L93 52 L95 60 L88 72 L72 80 L58 85 L48 92 L42 85 L35 72 L28 58 L21 45 L17 32 Z" />
         </clipPath>
       </defs>
       {/* خريطة المملكة (مبسطة) */}
       <path
-        d="M14 26 L30 16 L44 14 L52 18 L60 12 L72 14 L86 24 L92 34 L88 44 L84 50 L86 58 L82 66 L70 74 L58 80 L48 88 L40 86 L36 78 L30 70 L24 64 L16 54 L12 44 Z"
+        d="M22 20 L36 12 L47 18 L68 24 L76 30 L80 39 L82 46 L88 47 L93 52 L95 60 L88 72 L72 80 L58 85 L48 92 L42 85 L35 72 L28 58 L21 45 L17 32 Z"
         stroke="url(#lg-teal)"
         strokeWidth="4"
         strokeLinejoin="round"
@@ -37,15 +37,15 @@ export function LogoMark({ size = 56, className = "" }: { size?: number; classNa
       />
       <g clipPath="url(#ksa-clip)">
         {/* جبال */}
-        <path d="M18 74 L36 50 L46 62 L54 46 L70 70 L82 62 L92 78 L92 96 L8 96 Z" fill="url(#lg-mtn)" />
-        <path d="M30 74 L40 60 L48 72 L58 56 L72 76 Z" fill="#cfe3e1" opacity="0.7" />
+        <path d="M20 76 L36 52 L46 64 L56 48 L70 70 L82 62 L94 78 L94 96 L8 96 Z" fill="url(#lg-mtn)" />
+        <path d="M30 76 L40 62 L48 74 L58 58 L72 78 Z" fill="#cfe3e1" opacity="0.7" />
         {/* رمال / أمواج */}
-        <path d="M8 84 Q30 78 50 84 T92 84 L92 96 L8 96 Z" fill="#17504e" opacity="0.35" />
+        <path d="M8 84 Q30 78 50 84 T94 84 L94 96 L8 96 Z" fill="#17504e" opacity="0.35" />
       </g>
       {/* نخلة */}
-      <path d="M50 44 L50 62" stroke="#17504e" strokeWidth="2.6" strokeLinecap="round" />
+      <path d="M52 44 L52 62" stroke="#17504e" strokeWidth="2.6" strokeLinecap="round" />
       <path
-        d="M50 44 C44 38 38 40 34 44 C40 43 46 45 50 44 Z M50 44 C56 38 62 40 66 44 C60 43 54 45 50 44 Z M50 44 C46 36 46 30 50 26 C51 32 51 38 50 44 Z M50 44 C42 44 38 48 36 52 C42 49 47 46 50 44 Z M50 44 C58 44 62 48 64 52 C58 49 53 46 50 44 Z"
+        d="M52 44 C46 38 40 40 36 44 C42 43 48 45 52 44 Z M52 44 C58 38 64 40 68 44 C62 43 56 45 52 44 Z M52 44 C48 36 48 30 52 26 C53 32 53 38 52 44 Z M52 44 C44 44 40 48 38 52 C44 49 49 46 52 44 Z M52 44 C60 44 64 48 66 52 C60 49 55 46 52 44 Z"
         fill="#1f6a68"
       />
     </svg>

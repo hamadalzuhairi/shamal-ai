@@ -57,10 +57,10 @@ export const SCENARIOS: Scenario[] = [
   {
     id: "first-id",
     title: "إصدار هوية وطنية لأول مرة",
-    summary: "الاحتياج: إصدار هوية لابن/ابنة أتم 15 سنة",
+    summary: "الاحتياج: إصدار هوية وطنية لفرد أسرة (6 إلى 19 عاماً)",
     audience: "citizen",
     intentKeywords: ["هوية لاول مرة", "هوية أول مرة", "اطلع هوية", "أطلع هوية", "هوية لولدي", "هوية لبنتي", "استخراج هوية"],
-    questions: [{ id: "age", question: "هل أتم صاحب الطلب 15 سنة؟", options: ["نعم", "لا"] }],
+    questions: [{ id: "age", question: "كم عمر صاحب الطلب؟", options: ["أقل من 6 سنوات", "من 6 إلى 19 سنة", "أكثر من 19 سنة"] }],
     serviceIds: ["national-id-issue"],
   },
   {
@@ -145,3 +145,25 @@ export const SCENARIOS: Scenario[] = [
     serviceIds: ["sehhaty-appointment"],
   },
 ];
+
+/* سيناريوهات إضافية مضافة بعد التحقق من المصادر الرسمية */
+SCENARIOS.push(
+  {
+    id: "disability",
+    title: "خدمات ذوي الإعاقة",
+    summary: "الاحتياج: تقييم الإعاقة والحصول على بطاقة تسهيلات",
+    audience: "all",
+    intentKeywords: ["إعاقة", "اعاقة", "ذوي الإعاقة", "تسهيلات", "بطاقة إعاقة", "معاق"],
+    questions: [{ id: "assessed", question: "هل يوجد تقييم إعاقة سابق لدى الوزارة؟", options: ["نعم", "لا", "ما أدري"] }],
+    serviceIds: ["disability-card"],
+  },
+  {
+    id: "payroll",
+    title: "رفع ملف حماية الأجور لمنشأتي",
+    summary: "الاحتياج: الالتزام ببرنامج حماية الأجور",
+    audience: "business",
+    intentKeywords: ["حماية الأجور", "مدد", "رواتب", "أجور", "ملف الأجور"],
+    questions: [],
+    serviceIds: ["gosi-register", "mudad-wps"],
+  },
+);

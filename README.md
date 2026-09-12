@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# شمال AI — خدماتك الحكومية .. بأسهل طريقة
 
-## Getting Started
+تطبيق ويب بتصميم جوال (Next.js 16 + TypeScript + Tailwind) يحوّل احتياج المستفيد المكتوب أو المنطوق إلى رحلة إجرائية حكومية: فهم الاحتياج → مطابقة الخدمات → بناء الرحلة → قائمة التحقق → مؤشر الجاهزية → «لو ما أقدر؟» → خطوتك التالية.
 
-First, run the development server:
+مشروع ابتكاري لهاكاثون ENBTHON 2026 — منطقة الحدود الشمالية.
+
+## التشغيل محلياً
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ثم افتح http://localhost:3000. بدون ضبط Firebase يعمل التطبيق في **وضع تجريبي** (الحسابات والرحلات تُحفظ محلياً في المتصفح).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## المتغيرات البيئية
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+انسخ `.env.example` إلى `.env.local` واملأ القيم:
 
-## Learn More
+| المتغير | الغرض |
+|---|---|
+| `NEXT_PUBLIC_FIREBASE_*` | تسجيل الدخول الحقيقي (بريد/كلمة مرور + Google) وحفظ الرحلات في Firestore |
+| `LLM_PROVIDER` | `openai-compatible` أو `anthropic` أو `oracle` أو `none` |
+| `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL` | لأي نقطة نهاية متوافقة مع OpenAI Chat Completions |
+| `ANTHROPIC_API_KEY` | لاستخدام Claude |
+| `ORACLE_LLM_URL`, `ORACLE_LLM_KEY`, `ORACLE_LLM_MODEL` | لنموذج Oracle (يُضبط حسب واجهة النموذج) |
 
-To learn more about Next.js, take a look at the following resources:
+عند غياب أي مزود نموذج لغوي، تعمل المطابقة بقواعد الكلمات المفتاحية (مناسبة كخطة بديلة أثناء العرض).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Firebase (تسجيل الدخول)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. أنشئ مشروعاً في https://console.firebase.google.com
+2. Authentication → Sign-in method → فعّل **Email/Password** و **Google**.
+3. Firestore Database → أنشئ قاعدة بيانات (وضع الإنتاج) وأضف القواعد:
 
-## Deploy on Vercel
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /journeys/{id} {
+      allow read, write: if request.auth != null && request.resource.data.userId == request.auth.uid
+        || (request.auth != null && resource.data.userId == request.auth.uid);
+    }
+    match /notifications/{id} {
+      allow read, write: if request.auth != null && request.resource.data.userId == request.auth.uid
+        || (request.auth != null && resource.data.userId == request.auth.uid);
+    }
+  }
+}
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Project settings → Your apps → Web app → انسخ القيم إلى `.env.local`.
+5. Authentication → Settings → Authorized domains → أضف نطاق Vercel بعد النشر.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## النشر على Vercel
+
+```bash
+npm i -g vercel
+vercel login
+vercel --prod
+```
+
+أو اربط المستودع من لوحة Vercel. أضف متغيرات البيئة نفسها في Project → Settings → Environment Variables.
+
+## بنية المشروع
+
+```
+src/app/                 الشاشات (App Router)
+  page.tsx               12 الشاشة التمهيدية
+  login, register        تسجيل الدخول / إنشاء حساب
+  (app)/home             1 الرئيسية — «وش تحتاج؟»
+  (app)/understand       2 فهمنا احتياجك
+  (app)/journey/[id]     3 رحلتك · /ready 4 جاهز؟ · /blocker 5 لو ما أقدر؟ · /next 6 خطوتك التالية · /chat
+  (app)/services         7 قائمة الخدمات · /[id] تفاصيل الخدمة والمصادر
+  (app)/chats            8 المحادثات
+  (app)/profile          9 حسابي (+ personal, settings, language)
+  (app)/notifications    10 الإشعارات
+  (app)/help             11 المساعدة والدعم
+  api/understand         فهم الاحتياج (نموذج لغوي + قواعد)
+  api/assist             مساعد سياقي داخل الرحلة
+src/lib/kb/              قاعدة المعرفة (الجهات، الخدمات، السيناريوهات) — موثقة من المصادر الرسمية
+src/lib/engine/          محرك الرحلة: الترتيب، الجاهزية، العوائق، الخطوة التالية
+src/lib/llm/             طبقة المزودين للنموذج اللغوي
+src/lib/firebase/        المصادقة
+src/lib/storage.ts       Firestore أو localStorage
+src/lib/hooks/useSpeech  الإدخال الصوتي (Web Speech API, ar-SA)
+docs/research-*.md       تقارير التحقق من المصادر الحكومية الرسمية مع كل الروابط
+scripts/validate-kb.ts   فحص سلامة قاعدة المعرفة
+```
+
+## فحص قاعدة المعرفة
+
+```bash
+npx tsx scripts/validate-kb.ts
+```

@@ -11,11 +11,11 @@ import type { Notification } from "@/lib/types";
 function relTime(ts: number) {
   const d = new Date(ts);
   const now = new Date();
-  if (d.toDateString() === now.toDateString()) return d.toLocaleTimeString("ar-SA", { hour: "2-digit", minute: "2-digit" });
+  if (d.toDateString() === now.toDateString()) return d.toLocaleTimeString("ar-SA-u-nu-latn", { hour: "2-digit", minute: "2-digit" });
   const y = new Date(now);
   y.setDate(now.getDate() - 1);
   if (d.toDateString() === y.toDateString()) return "أمس";
-  return d.toLocaleDateString("ar-SA", { month: "numeric", day: "numeric" });
+  return d.toLocaleDateString("ar-SA-u-nu-latn", { month: "numeric", day: "numeric" });
 }
 
 const ICON: Record<Notification["kind"], { icon: typeof Bell; cls: string }> = {
