@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { LogoFull } from "@/components/Logo";
+import { PhotoBackdrop } from "@/components/PhotoBackdrop";
 import { useAuth } from "@/lib/auth-context";
 
 export default function RegisterPage() {
@@ -32,11 +33,13 @@ export default function RegisterPage() {
   const input = "mt-1 w-full rounded-2xl border border-border bg-surface px-4 py-3 outline-none focus:border-primary";
 
   return (
-    <main className="flex-1 flex flex-col px-6 pt-14 pb-8">
-      <div className="flex justify-center">
+    <main className="flex-1 flex flex-col relative overflow-hidden bg-[#e9eeee] px-5 pt-14 pb-8">
+      <PhotoBackdrop />
+      <div className="relative flex justify-center">
         <LogoFull size={64} />
       </div>
-      <h1 className="text-2xl font-bold mt-10">أنشئ حسابك</h1>
+      <div className="relative card mt-8 p-5 !bg-white/90 backdrop-blur-sm">
+      <h1 className="text-2xl font-bold">أنشئ حسابك</h1>
       <p className="text-muted text-sm mt-1">حساب واحد لحفظ رحلاتك ومتابعة خطواتك.</p>
 
       <form onSubmit={submit} className="mt-6 space-y-4">
@@ -58,7 +61,8 @@ export default function RegisterPage() {
         </button>
       </form>
 
-      <p className="text-center text-sm text-muted mt-auto pt-8">
+      </div>
+      <p className="relative text-center text-sm text-primary-dark mt-auto pt-8">
         عندك حساب؟{" "}
         <Link href="/login" className="text-primary font-bold">
           سجّل دخولك

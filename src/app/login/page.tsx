@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { LogoFull } from "@/components/Logo";
+import { PhotoBackdrop } from "@/components/PhotoBackdrop";
 import { useAuth } from "@/lib/auth-context";
 
 function LoginForm() {
@@ -31,11 +32,13 @@ function LoginForm() {
   };
 
   return (
-    <main className="flex-1 flex flex-col px-6 pt-14 pb-8">
-      <div className="flex justify-center">
+    <main className="flex-1 flex flex-col relative overflow-hidden bg-[#e9eeee] px-5 pt-14 pb-8">
+      <PhotoBackdrop />
+      <div className="relative flex justify-center">
         <LogoFull size={64} />
       </div>
-      <h1 className="text-2xl font-bold mt-10">أهلاً بك من جديد</h1>
+      <div className="relative card mt-8 p-5 !bg-white/90 backdrop-blur-sm">
+      <h1 className="text-2xl font-bold">أهلاً بك من جديد</h1>
       <p className="text-muted text-sm mt-1">سجّل دخولك لمتابعة رحلتك الحكومية.</p>
 
       <form onSubmit={submit} className="mt-6 space-y-4">
@@ -75,7 +78,8 @@ function LoginForm() {
         </p>
       )}
 
-      <p className="text-center text-sm text-muted mt-auto pt-8">
+      </div>
+      <p className="relative text-center text-sm text-primary-dark mt-auto pt-8">
         ما عندك حساب؟{" "}
         <Link href="/register" className="text-primary font-bold">
           أنشئ حساباً

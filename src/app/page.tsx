@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
 import { useAuth } from "@/lib/auth-context";
-import { IMAGES } from "@/lib/images";
+import { PhotoBackdrop } from "@/components/PhotoBackdrop";
 
 /** الشاشة 12: الشاشة التمهيدية — صورة جبال ضبابية هادئة كما في التصميم */
 export default function Splash() {
@@ -19,14 +19,7 @@ export default function Splash() {
 
   return (
     <main className="flex-1 flex flex-col relative overflow-hidden bg-[#e9eeee]">
-      {/* الصورة مخففة الإضاءة والتشبع لتعطي إحساساً ضبابياً هادئاً */}
-      <div
-        className="absolute inset-0 photo-cover"
-        style={{ backgroundImage: `url(${IMAGES.splash})`, backgroundPosition: "center 70%", filter: "saturate(0.55) brightness(0.82) contrast(0.85)" }}
-      />
-      {/* طبقة ضباب: فاتحة في الأعلى، شفافة في الوسط، ضباب أبيض خفيف في الأسفل */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#e9eeee]/95 via-[#e9eeee]/55 to-[#e9eeee]/20" />
-      <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-white/75 to-transparent" />
+      <PhotoBackdrop />
 
       <div className="relative flex-1 flex flex-col items-center pt-24 px-8 text-center">
         <div className="flex items-center gap-3" dir="rtl">
