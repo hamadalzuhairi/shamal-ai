@@ -11,6 +11,7 @@ import { completeCurrentStep, computeReadiness, currentStep, setRequirementStatu
 import { getService } from "@/lib/kb";
 import { pushNotification } from "@/lib/storage";
 import type { Requirement } from "@/lib/types";
+import { IMAGES } from "@/lib/images";
 
 /** الشاشة 4: جاهز؟ — مؤشر الجاهزية وقائمة التحقق */
 export default function ReadyPage({ params }: { params: Promise<{ id: string }> }) {
@@ -50,17 +51,22 @@ export default function ReadyPage({ params }: { params: Promise<{ id: string }> 
   return (
     <>
       <TopBar showLogo back={`/journey/${journey.id}`} />
-      <Page>
-        <h1 className="text-xl font-bold">جاهز للتقديم؟</h1>
+      <Page className="relative">
+        {/* خلفية جبال باهتة خلف مؤشر الجاهزية كما في التصميم */}
+        <div
+          className="absolute inset-x-0 top-0 h-[330px] -z-10 photo-cover opacity-30"
+          style={{ backgroundImage: `url(${IMAGES.readiness})`, maskImage: "linear-gradient(to bottom, black 55%, transparent)", WebkitMaskImage: "linear-gradient(to bottom, black 55%, transparent)" }}
+        />
+        <h1 className="text-2xl font-bold">جاهز للتقديم؟</h1>
         <p className="text-sm text-muted">تأكد من اكتمال المتطلبات قبل المتابعة</p>
 
         {!step || !svc ? (
           <EmptyState title="اكتملت رحلتك 🎉" body="أنجزت جميع الخطوات المطلوبة." />
         ) : (
           <>
-            <div className="card mt-4 p-4 flex items-center gap-4">
-              <ReadinessRing percent={r.percent} level={r.level} />
-              <div className="flex-1">
+            <div className="mt-5 flex flex-col items-center gap-3">
+              <ReadinessRing percent={r.percent} level={r.level} size={150} />
+              <div className="text-center">
                 <div className="text-xs text-muted">الخطوة الحالية</div>
                 <div className="font-bold text-sm">{svc.name}</div>
                 <div className="mt-2">
@@ -71,7 +77,7 @@ export default function ReadyPage({ params }: { params: Promise<{ id: string }> 
             </div>
 
             {/* قائمة التحقق */}
-            <div className="card mt-3 p-4">
+            <div className="card mt-5 p-4 !bg-ok-soft/40 !border-ok/20">
               <div className="font-bold text-sm mb-3 flex items-center gap-2">
                 <ShieldCheck size={16} className="text-primary" /> قائمة التحقق
               </div>
@@ -135,17 +141,17 @@ export default function ReadyPage({ params }: { params: Promise<{ id: string }> 
             {firstBlocker ? (
               <Link
                 href={`/journey/${journey.id}/blocker?req=${firstBlocker.id}`}
-                className="card mt-3 p-4 flex items-center gap-3 border-danger/30 bg-danger-soft/30"
+                className="card mt-3 p-4 flex items-center gap-3 !border-purple/30 !bg-purple-soft/60"
               >
-                <div className="w-10 h-10 rounded-full bg-danger-soft text-danger flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-full bg-purple-soft text-purple flex items-center justify-center shrink-0">
                   <AlertTriangle size={20} />
                 </div>
                 <div className="flex-1">
-                  <div className="text-xs text-danger font-bold">ينقصك</div>
+                  <div className="text-xs text-purple font-bold">ينقصك</div>
                   <div className="font-bold text-sm">{firstBlocker.label}</div>
                   <div className="text-[11px] text-muted">اضغط لعرض المسار الرسمي لمعالجة العائق</div>
                 </div>
-                <ArrowLeft className="text-danger" size={18} />
+                <ArrowLeft className="text-purple" size={18} />
               </Link>
             ) : (
               <div className="card mt-3 p-4 flex items-center gap-3 border-ok/30 bg-ok-soft/40">

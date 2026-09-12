@@ -3,19 +3,20 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ArrowLeft, Car, Contact, FileBadge, Keyboard, Mic, Plane, Sparkles } from "lucide-react";
+import { ArrowLeft, Car, ChevronLeft, Contact, FileBadge, Keyboard, Mic, Plane, Sparkles } from "lucide-react";
 import { NotificationBell, Page, SectionTitle, TopBar } from "@/components/ui";
 import { LogoMark } from "@/components/Logo";
 import { useAuth } from "@/lib/auth-context";
 import { useSpeech } from "@/lib/hooks/useSpeech";
 import { useJourneys, useNotifications } from "@/lib/hooks/useJourneys";
 import { getService } from "@/lib/kb";
+import { IMAGES } from "@/lib/images";
 
 const QUICK = [
-  { id: "commercial-register", label: "إصدار سجل تجاري", sub: "وزارة التجارة", icon: FileBadge },
-  { id: "driving-license", label: "إصدار رخصة قيادة", sub: "المرور", icon: Car },
-  { id: "passport-issue", label: "إصدار جواز سفر", sub: "الجوازات", icon: Plane },
-  { id: "national-id-issue", label: "إصدار هوية وطنية", sub: "الأحوال المدنية", icon: Contact },
+  { id: "iqama-renew", label: "تجديد الإقامة", sub: "الجوازات", icon: FileBadge, tile: "tile-beige", color: "#8a6d3b" },
+  { id: "passport-issue", label: "إصدار جواز سفر", sub: "الجوازات", icon: Plane, tile: "tile-blue", color: "#3b5f8a" },
+  { id: "driving-license", label: "إصدار رخصة قيادة", sub: "المرور", icon: Car, tile: "tile-green", color: "#2e7a5a" },
+  { id: "national-id-issue", label: "إصدار هوية وطنية", sub: "الأحوال المدنية", icon: Contact, tile: "tile-lavender", color: "#5b4f9a" },
 ];
 
 const EXAMPLES = ["أبي أبدأ مشروع وما أعرف وش أحتاج", "هويتي منتهية وش أسوي؟", "أبي أجيب أهلي زيارة", "اشتريت سيارة وأبي أنقل ملكيتها"];
@@ -25,6 +26,7 @@ export default function HomePage() {
   const { user } = useAuth();
   const router = useRouter();
   const [need, setNeed] = useState("");
+  const [typing, setTyping] = useState(false);
   const { unread } = useNotifications();
   const { journeys } = useJourneys();
   const speech = useSpeech((text) => {
@@ -43,56 +45,73 @@ export default function HomePage() {
   return (
     <>
       <TopBar showLogo right={<NotificationBell count={unread} />} />
-      <Page>
-        {/* بطاقة الترحيب */}
-        <section className="hero-mountains rounded-3xl overflow-hidden text-white p-5 mt-1">
-          <div className="text-sm opacity-90">أهلاً بك في</div>
-          <div className="text-2xl font-bold">شمال AI</div>
-          <p className="text-xs opacity-90 mt-2 max-w-[240px]">
-            مساعدك الذكي للوصول إلى الخدمات الحكومية في منطقة الحدود الشمالية.
-          </p>
-          {user && <div className="text-xs mt-3 opacity-80">مرحباً {user.name} 👋</div>}
+      <Page className="!px-0">
+        {/* بطاقة الترحيب بصورة الجرف الصحراوي */}
+        <section className="relative mx-4 rounded-[28px] overflow-hidden h-[210px] photo-cover" style={{ backgroundImage: `url(${IMAGES.heroCliff})`, backgroundPosition: "center 40%" }}>
+          <div className="absolute inset-0 bg-gradient-to-l from-black/55 via-black/25 to-transparent" />
+          <div className="absolute inset-0 p-5 flex flex-col justify-center items-start text-white text-right" dir="rtl">
+            <div className="text-lg leading-tight drop-shadow">أهلاً بك في</div>
+            <div className="text-[28px] font-bold leading-tight drop-shadow">شمال AI</div>
+            <p className="text-[11px] opacity-95 mt-2 max-w-[210px] leading-relaxed drop-shadow">
+              مساعدك الذكي للوصول إلى الخدمات الحكومية في منطقة الحدود الشمالية.
+            </p>
+            {user && <div className="text-[11px] mt-2 opacity-90 drop-shadow">مرحباً {user.name} 👋</div>}
+          </div>
         </section>
 
-        {/* مربع الاحتياج */}
-        <section className="card mt-4 p-4">
-          <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-full bg-primary-soft flex items-center justify-center text-primary shrink-0">
-              <Sparkles size={18} />
-            </div>
-            <div className="flex-1">
-              <div className="font-bold">وش تحتاج؟</div>
-              <div className="text-xs text-muted">اكتب طلبك أو تحدث معنا</div>
+        {/* مربع الاحتياج — يتداخل مع أسفل البطاقة */}
+        <section className="card mx-4 -mt-9 relative p-4 shadow-lg">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={speech.toggle}
+              aria-label="تحدث"
+              className={`w-11 h-11 rounded-full border border-border bg-surface flex items-center justify-center text-primary shrink-0 ${speech.listening ? "recording !bg-danger !text-white !border-danger" : ""}`}
+            >
+              <Mic size={18} />
+            </button>
+            <div
+              className="flex-1 rounded-2xl border border-border bg-surface-2 px-4 py-3 cursor-text"
+              onClick={() => setTyping(true)}
+            >
+              {typing ? (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    go(need);
+                  }}
+                >
+                  <input
+                    autoFocus
+                    value={speech.listening ? speech.interim || need : need}
+                    onChange={(e) => setNeed(e.target.value)}
+                    placeholder="اكتب طلبك هنا..."
+                    className="w-full bg-transparent text-sm outline-none"
+                  />
+                </form>
+              ) : (
+                <>
+                  <div className="font-bold text-sm flex items-center gap-1">
+                    <Sparkles size={14} className="text-primary" /> وش تحتاج؟
+                  </div>
+                  <div className="text-[11px] text-muted">اكتب طلبك أو تحدث معنا</div>
+                </>
+              )}
             </div>
           </div>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              go(need);
-            }}
-            className="mt-3"
-          >
-            <textarea
-              value={speech.listening ? speech.interim || need : need}
-              onChange={(e) => setNeed(e.target.value)}
-              rows={2}
-              placeholder="مثال: أبي أبدأ مشروع وما أعرف وش أحتاج"
-              className="w-full resize-none rounded-2xl border border-border bg-surface-2 px-4 py-3 text-sm outline-none focus:border-primary"
-            />
-            {speech.error && <div className="text-danger text-xs mt-1">{speech.error}</div>}
-            <div className="grid grid-cols-2 gap-2 mt-3">
-              <button
-                type="button"
-                onClick={speech.toggle}
-                className={`btn-ghost ${speech.listening ? "recording !bg-danger !text-white !border-danger" : ""}`}
-              >
-                <Mic size={18} /> {speech.listening ? "جارٍ الاستماع..." : "تحدث صوتياً"}
-              </button>
-              <button type="submit" className="btn-primary !py-3">
-                <Keyboard size={18} /> اكتب طلبك
-              </button>
-            </div>
-          </form>
+          {speech.error && <div className="text-danger text-xs mt-2">{speech.error}</div>}
+          <div className="grid grid-cols-2 gap-2 mt-3">
+            <button type="button" onClick={speech.toggle} className={`btn-ghost !py-2.5 text-sm ${speech.listening ? "!bg-danger !text-white !border-danger" : ""}`}>
+              <Mic size={16} /> {speech.listening ? "جارٍ الاستماع..." : "تحدث صوتياً"}
+            </button>
+            <button
+              type="button"
+              onClick={() => (typing && need.trim() ? go(need) : setTyping(true))}
+              className="btn-ghost !py-2.5 text-sm"
+            >
+              <Keyboard size={16} /> اكتب طلبك
+            </button>
+          </div>
           <div className="flex gap-2 overflow-x-auto scrollbar-none mt-3 -mx-1 px-1">
             {EXAMPLES.map((ex) => (
               <button key={ex} onClick={() => go(ex)} className="chip text-xs">
@@ -104,7 +123,7 @@ export default function HomePage() {
 
         {/* رحلتك الحالية */}
         {active && (
-          <Link href={`/journey/${active.id}`} className="card mt-4 p-4 flex items-center gap-3 block">
+          <Link href={`/journey/${active.id}`} className="card mx-4 mt-3 p-4 flex items-center gap-3">
             <LogoMark size={40} />
             <div className="flex-1 min-w-0">
               <div className="text-xs text-muted">رحلتك الحالية</div>
@@ -118,37 +137,42 @@ export default function HomePage() {
         )}
 
         {/* أكثر الخدمات طلباً */}
-        <SectionTitle
-          action={
-            <Link href="/services" className="text-xs text-primary font-bold">
-              عرض الكل
-            </Link>
-          }
-        >
-          أكثر الخدمات طلباً
-        </SectionTitle>
-        <div className="grid grid-cols-4 gap-2">
-          {QUICK.map(({ id, label, sub, icon: Icon }) => (
-            <Link key={id} href={`/services/${id}`} className="card p-2 flex flex-col items-center text-center gap-1">
-              <div className="w-10 h-10 rounded-xl bg-primary-soft text-primary flex items-center justify-center">
-                <Icon size={20} />
-              </div>
-              <div className="text-[11px] font-bold leading-tight">{label}</div>
-              <div className="text-[10px] text-muted">{sub}</div>
-            </Link>
-          ))}
-        </div>
-
-        {/* بانر */}
-        <section className="mt-4 rounded-3xl bg-primary-soft p-4 flex items-center gap-3">
-          <div className="flex-1">
-            <div className="font-bold text-primary-dark">خدماتك في مكان واحد</div>
-            <p className="text-xs text-muted mt-1">
-              نفهم احتياجك، نبني رحلتك، نكشف النواقص قبل التقديم، ونحدد خطوتك التالية.
-            </p>
+        <div className="px-4">
+          <SectionTitle
+            action={
+              <Link href="/services" className="text-xs text-muted font-medium flex items-center gap-0.5">
+                عرض الكل <ChevronLeft size={14} />
+              </Link>
+            }
+          >
+            أكثر الخدمات طلباً
+          </SectionTitle>
+          <div className="grid grid-cols-4 gap-2">
+            {QUICK.map(({ id, label, sub, icon: Icon, tile, color }) => (
+              <Link key={id} href={`/services/${id}`} className={`${tile} rounded-2xl p-2 pt-3 flex flex-col items-center text-center gap-1.5`}>
+                <div className="w-10 h-10 rounded-xl bg-white/80 flex items-center justify-center" style={{ color }}>
+                  <Icon size={20} />
+                </div>
+                <div className="text-[11px] font-bold leading-tight" style={{ color }}>
+                  {label}
+                </div>
+                <div className="text-[10px] text-muted">{sub}</div>
+              </Link>
+            ))}
           </div>
-          <LogoMark size={56} />
-        </section>
+
+          {/* بانر بجبال مائية */}
+          <section className="mt-4 rounded-3xl overflow-hidden relative bg-gradient-to-l from-[#eef4f4] to-[#dfeceb] border border-border">
+            <div className="absolute inset-y-0 left-0 w-[45%] watercolor-mountains opacity-90" />
+            <div className="relative p-4 pl-[42%] flex items-center gap-2">
+              <div className="flex-1">
+                <div className="font-bold text-primary-dark text-sm">خدماتك في مكان واحد</div>
+                <p className="text-[11px] text-muted mt-1 leading-relaxed">نفهم احتياجك، نبني رحلتك، نكشف النواقص قبل التقديم، ونحدد خطوتك التالية.</p>
+              </div>
+              <ChevronLeft size={18} className="text-primary shrink-0" />
+            </div>
+          </section>
+        </div>
       </Page>
     </>
   );

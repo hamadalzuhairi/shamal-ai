@@ -187,3 +187,17 @@ body {
 .recording {
   animation: rec-pulse 1s infinite;
 }
+
+/* ---------- خلفيات فوتوغرافية ---------- */
+.photo-cover {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.watercolor-mountains {
+  background: url("/watercolor-mountains.svg") center bottom / cover no-repeat;
+}
+.tile-beige { background: #f4eee3; }
+.tile-green { background: #e4f0ea; }
+.tile-blue { background: #e4edf5; }
+.tile-lavender { background: #ebe7f4; }

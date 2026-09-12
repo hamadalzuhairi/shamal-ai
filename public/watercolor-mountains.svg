@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" preserveAspectRatio="xMidYMax slice">
+  <defs>
+    <filter id="wash" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="7" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation="2.2"/>
+    </filter>
+    <filter id="mist" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eef4f4" stop-opacity="0"/>
+      <stop offset="1" stop-color="#dbe8e8" stop-opacity="0.6"/>
+    </linearGradient>
+    <linearGradient id="far" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c3d6d8" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#c3d6d8" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="mid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9dbdbe" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#9dbdbe" stop-opacity="0.15"/>
+    </linearGradient>
+    <linearGradient id="near" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5f948f" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#3f7e7a" stop-opacity="0.25"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="320" fill="url(#sky)"/>
+  <!-- بعيدة -->
+  <path filter="url(#wash)" fill="url(#far)" d="M0 225 C40 200 70 170 110 178 C150 186 165 140 210 118 C250 100 275 150 320 150 C360 150 380 100 430 110 C470 118 490 165 540 158 C590 150 610 105 660 112 C700 118 720 160 760 150 C780 145 790 150 800 155 L800 320 L0 320 Z"/>
+  <!-- وسطى -->
+  <path filter="url(#wash)" fill="url(#mid)" d="M0 258 C50 240 80 205 130 210 C170 214 190 175 240 165 C290 156 310 205 360 205 C400 205 420 160 470 165 C520 170 540 210 590 205 C640 200 655 165 705 172 C745 178 770 210 800 205 L800 320 L0 320 Z"/>
+  <!-- ضوء على القمم -->
+  <path filter="url(#mist)" fill="#ffffff" opacity="0.55" d="M215 168 C240 160 265 172 285 190 L250 200 L205 195 Z M455 168 C480 162 505 175 520 192 L485 200 L445 196 Z"/>
+  <!-- قريبة -->
+  <path filter="url(#wash)" fill="url(#near)" d="M0 292 C40 275 80 250 130 258 C170 264 200 232 250 236 C300 240 320 275 370 272 C410 270 430 240 480 245 C530 250 550 280 600 276 C650 272 670 245 720 250 C760 254 780 275 800 270 L800 320 L0 320 Z"/>
+  <!-- ضباب سفلي -->
+  <rect filter="url(#mist)" x="-20" y="280" width="840" height="60" fill="#ffffff" opacity="0.6"/>
+</svg>
