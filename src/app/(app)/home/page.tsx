@@ -47,9 +47,9 @@ export default function HomePage() {
       <TopBar showLogo right={<NotificationBell count={unread} />} />
       <Page className="!px-0">
         {/* بطاقة الترحيب بصورة الجرف الصحراوي */}
-        <section className="relative mx-4 rounded-[28px] overflow-hidden h-[210px] photo-cover" style={{ backgroundImage: `url(${IMAGES.heroCliff})`, backgroundPosition: "center 40%" }}>
-          <div className="absolute inset-0 bg-gradient-to-l from-black/55 via-black/25 to-transparent" />
-          <div className="absolute inset-0 p-5 flex flex-col justify-center items-start text-white text-right" dir="rtl">
+        <section className="relative mx-4 rounded-[28px] overflow-hidden h-[290px] photo-cover" style={{ backgroundImage: `url(${IMAGES.heroCliff})`, backgroundPosition: "center 58%", filter: "saturate(1.05)" }}>
+          <div className="absolute inset-0 bg-gradient-to-l from-black/55 via-black/20 to-transparent" />
+          <div className="absolute inset-0 p-5 pt-6 flex flex-col justify-start items-start text-white text-right" dir="rtl">
             <div className="text-lg leading-tight drop-shadow">أهلاً بك في</div>
             <div className="text-[28px] font-bold leading-tight drop-shadow">شمال AI</div>
             <p className="text-[11px] opacity-95 mt-2 max-w-[210px] leading-relaxed drop-shadow">

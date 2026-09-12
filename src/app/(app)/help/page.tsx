@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown, ChevronLeft, HelpCircle, Mail, Star } from "lucide-react";
 import { Page, TopBar } from "@/components/ui";
+import { IMAGES } from "@/lib/images";
 
 const FAQ = [
   { q: "ما هو شمال AI؟", a: "منصة ذكية تحوّل وصفك لاحتياجك الحكومي إلى رحلة إجرائية واضحة: تفهم قصدك، تحدد الخدمات، ترتب الخطوات، تكشف النواقص، وتحدد خطوتك التالية." },
@@ -73,9 +74,14 @@ export default function HelpPage() {
           </li>
         </ul>
 
-        {/* جبال مائية أسفل الشاشة كما في التصميم */}
-        <div className="flex-1 -mx-4 mt-4 relative min-h-[260px] watercolor-mountains">
-          <div className="absolute inset-x-0 top-[26%] flex flex-col items-center gap-0 text-primary-dark">
+        {/* صورة جبال حقيقية أسفل الشاشة مع تلاشٍ ضبابي في الأعلى */}
+        <div className="flex-1 -mx-4 mt-4 relative min-h-[300px] overflow-hidden">
+          <div
+            className="absolute inset-0 photo-cover"
+            style={{ backgroundImage: `url(${IMAGES.help})`, backgroundPosition: "center 60%", filter: "saturate(0.6) brightness(0.95)" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-bg via-bg/70 to-transparent" />
+          <div className="absolute inset-x-0 top-[22%] flex flex-col items-center gap-0 text-primary-dark">
             <PalmIcon />
             <div className="text-sm font-bold">معك في كل خطوة</div>
           </div>
