@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9f2f2"/>
+      <stop offset="1" stop-color="#b9d4d2"/>
+    </linearGradient>
+    <linearGradient id="m1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fa9a6"/>
+      <stop offset="1" stop-color="#3c7c78"/>
+    </linearGradient>
+    <linearGradient id="m2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4f8b87"/>
+      <stop offset="1" stop-color="#1f5f5c"/>
+    </linearGradient>
+    <linearGradient id="m3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f6f6c"/>
+      <stop offset="1" stop-color="#17504e"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#sky)"/>
+  <path d="M0 280 L90 170 L160 230 L240 120 L330 220 L420 150 L500 240 L580 140 L660 220 L740 160 L800 230 L800 400 L0 400 Z" fill="url(#m1)"/>
+  <path d="M0 320 L70 250 L150 300 L230 210 L320 300 L400 240 L480 310 L560 230 L650 300 L730 250 L800 310 L800 400 L0 400 Z" fill="url(#m2)"/>
+  <path d="M0 360 L100 320 L200 350 L300 310 L400 350 L500 320 L600 355 L700 320 L800 350 L800 400 L0 400 Z" fill="url(#m3)"/>
+</svg>
